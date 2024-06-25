@@ -1,4 +1,5 @@
-# capa de servicio/lógica de negocio
+# capa de servicio/lógica de negocio.
+# funciones importadas.
 
 from ..transport import transport
 from ..dao import repositories
@@ -11,8 +12,9 @@ def getAllImages(input=None):
     images_data = transport.getAllImages(input)
     # recorre el listado de objetos en images_data, lo transforma en NASACard y lo guarda en images.
     images = [mapper.fromRequestIntoNASACard(image) for image in images_data]
-    # retorna las imagenes.
+    # retorna las imagenes
     return images
+
 
 def getImagesBySearchInputLike(input):
     return getAllImages(input)
