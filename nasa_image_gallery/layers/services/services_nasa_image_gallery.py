@@ -5,13 +5,14 @@ from ..dao import repositories
 from ..generic import mapper
 from django.contrib.auth import get_user
 
+# Funcion para obtener imagenes.
 def getAllImages(input=None):
-    imagenes_data = transport.getAllImages(input)
-     # obtiene un listado de imágenes desde transport.py y lo guarda en images_data.
-    imagenes = [mapper.fromRequestIntoNASACard(imagen) for imagen in imagenes_data]
-    # recorre el listado de objetos en images_data, lo transforma en una NASACard y lo guarda en imagenes.
-    return imagenes
-
+    # obtiene un listado de imagenes desde transport.py y lo guarda en images_data.
+    images_data = transport.getAllImages(input)
+    # recorre el listado de objetos en images_data, lo transforma en NASACard y lo guarda en images.
+    images = [mapper.fromRequestIntoNASACard(image) for image in images_data]
+    # retorna las imagenes.
+    return images
 
 def getImagesBySearchInputLike(input):
     return getAllImages(input)
