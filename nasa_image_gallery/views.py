@@ -4,7 +4,10 @@
 from django.shortcuts import redirect, render
 from .layers.services import services_nasa_image_gallery
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth import logout
+from django.contrib.auth import logout, authenticate, login
+from django.contrib import messages
+from django import forms
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 
 # función que invoca al template del índice de la aplicación.
 def index_page(request):
@@ -12,27 +15,30 @@ def index_page(request):
 
 # auxiliar: retorna 2 listados -> uno de las imágenes de la API y otro de los favoritos del usuario.
 def getAllImagesAndFavouriteList(request):
-    images = []
-    favourite_list = []
+    imagenes = []
+    lista_favoritos = []
 
-    return images, favourite_list
+    return imagenes, lista_favoritos
 
 # función principal de la galería.
 def home(request):
     # llama a la función auxiliar getAllImagesAndFavouriteList() y obtiene 2 listados: uno de las imágenes de la API y otro de favoritos por usuario*.
     # (*) este último, solo si se desarrolló el opcional de favoritos; caso contrario, será un listado vacío [].
-    images = []
-    favourite_list = []
-    return render(request, 'home.html', {'images': images, 'favourite_list': favourite_list} )
+   imagenes, lista_favoritos = getAllImagesAndFavouriteList(request)
+    return render(request, 'home.html', {'imagenes': imagenes, 'lista_favoritos': lista_favoritos})
 
 
 # función utilizada en el buscador.
 def search(request):
-    images, favourite_list = getAllImagesAndFavouriteList(request)
+    imagenes, lista_favoritos = getAllImagesAndFavouriteList(request)
     search_msg = request.POST.get('query', '')
 
-    # si el usuario no ingresó texto alguno, debe refrescar la página; caso contrario, debe filtrar aquellas imágenes que posean el texto de búsqueda.
-    pass
+    if search_msg:
+        imagenes = services_nasa_image_gallery.getAllImages(search_msg)
+    
+    return render(request, 'home.html', {'imagenes': imagenes, 'lista_favoritos': lista_favoritos})
+
+    # si el usuario no ingresó texto alguno, debe refrescar la página; caso contrario, debe filtrar aquellas imágenes que posean el texto de búsqueda
 
 
 # las siguientes funciones se utilizan para implementar la sección de favoritos: traer los favoritos de un usuario, guardarlos, eliminarlos y desloguearse de la app.
