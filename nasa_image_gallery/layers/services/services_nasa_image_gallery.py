@@ -8,10 +8,10 @@ from django.contrib.auth import get_user
 
 # Funcion para obtener imagenes.
 def getAllImages(input=None):
-    # obtiene un listado de imagenes desde transport.py y lo guarda en images_data.
-    images_data = transport.getAllImages(input)
-    # recorre el listado de objetos en images_data, lo transforma en NASACard y lo guarda en images.
-    images = [mapper.fromRequestIntoNASACard(image) for image in images_data]
+    # obtiene un listado de imagenes desde transport.py y lo guarda en json_collection.
+    json_collection = transport.getAllImages(input)
+    # recorre el listado de objetos en json_collection, lo transforma en NASACard y lo guarda en images.
+    images = [mapper.fromRequestIntoNASACard(image) for image in json_collection]
     # retorna las imagenes
     return images
 
