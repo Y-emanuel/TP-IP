@@ -6,6 +6,10 @@ from .layers.services import services_nasa_image_gallery
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout
 
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
+from django.contrib.auth import logout, authenticate, login
+from django.contrib import messages
+
 
 # función que invoca al template del índice de la aplicación.
 def index_page(request):
@@ -41,6 +45,29 @@ def search(request):
 
 # si el usuario no ingresó texto alguno, debe refrescar la página; caso contrario, debe filtrar aquellas imágenes que posean el texto de búsqueda
 
+# funcion inicio de sesion.
+def inicio_sesion(request):
+    # revisa usuario y contraseña.
+    if request.method == 'POST':
+        form = AuthenticationForm(request, request.POST)
+        if form.is_valid():
+            user = authenticate(
+                username=form.cleaned_data['username'], 
+                password=form.cleaned_data['password']
+            )
+            # si el inicio de sesion es valido, muestra un mensaje y lo redirige a la pagina principal.
+            if user:
+                login(request, user)
+                messages.success(request, 'Inicio de sesión exitoso.')
+                return redirect('home')
+            # en caso contrario muestra un mensaje de inicio de sesion incorrecto.
+            else:
+                messages.error(request, 'Credenciales incorrectas. Inténtelo nuevamente.')
+        else:
+            messages.error(request, 'Formulario de inicio de sesión no válido. Revise los datos ingresados.')
+    else:
+        form = AuthenticationForm()
+    return render(request, 'registration/login.html', {'form': form})
 
 # las siguientes funciones se utilizan para implementar la sección de favoritos: traer los favoritos de un usuario, guardarlos, eliminarlos y desloguearse de la app.
 @login_required
