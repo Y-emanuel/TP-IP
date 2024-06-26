@@ -1,7 +1,40 @@
 body {
     color: #566787;
-    background: #f5f5f5;
+    /* background: #f5f5f5; */
     font-family: 'Roboto', sans-serif;
+    background-image: url(https://png.pngtree.com/background/20230520/original/pngtree-3d-planets-in-space-wallpapers-for-mobile-picture-image_2670749.jpg);
+
+}
+.text-center, .color{
+    color: #FFF;
+}
+
+.link-h{
+    text-decoration: none;
+    color: #1a89c9;
+    padding: 5px;
+    border: 2px;
+    border-radius: 5px;
+    background-color: #000;
+    transition: 1s;
+}
+.link-h:hover{
+    color: #E34724;
+    background-color: #FFF;
+
+}
+
+.b-buscar{
+    background-color: #000;
+    font-weight: bolder;
+}
+.buscador{
+    background-color: #5a5a5aa1;
+    border-color: #198754;
+}
+
+.buscador::placeholder{
+    color: #FFF;
 }
 
 .table-responsive {
